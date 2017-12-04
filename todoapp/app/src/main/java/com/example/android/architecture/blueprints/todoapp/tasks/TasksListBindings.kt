@@ -21,14 +21,8 @@ import android.widget.ListView
 
 import com.example.android.architecture.blueprints.todoapp.data.Task
 
-/**
- * Contains [BindingAdapter]s for the [Task] list.
- */
-object TasksListBindings {
-
-    @BindingAdapter("app:items")
-    fun setItems(listView: ListView, items: List<Task>) {
-        val adapter = listView.adapter as TasksFragment.TasksAdapter
-        adapter?.replaceData(items)
-    }
+@BindingAdapter("app:items")
+fun ListView.setItems(items: List<Task>) {
+    val adapter = adapter as? TasksFragment.TasksAdapter
+    adapter?.replaceData(items)
 }

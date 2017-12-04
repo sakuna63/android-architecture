@@ -78,8 +78,8 @@ class AddEditTaskActivity : AppCompatActivity(), AddEditTaskNavigator {
 
     private fun findOrCreateViewFragment(): AddEditTaskFragment {
         // View Fragment
-        var addEditTaskFragment: AddEditTaskFragment? = supportFragmentManager
-            .findFragmentById(R.id.contentFrame) as AddEditTaskFragment
+        var addEditTaskFragment = supportFragmentManager
+            .findFragmentById(R.id.contentFrame) as? AddEditTaskFragment
 
         if (addEditTaskFragment == null) {
             addEditTaskFragment = AddEditTaskFragment.newInstance()
@@ -88,7 +88,7 @@ class AddEditTaskActivity : AppCompatActivity(), AddEditTaskNavigator {
             val bundle = Bundle()
             bundle.putString(AddEditTaskFragment.ARGUMENT_EDIT_TASK_ID,
                 intent.getStringExtra(AddEditTaskFragment.ARGUMENT_EDIT_TASK_ID))
-            addEditTaskFragment!!.arguments = bundle
+            addEditTaskFragment.arguments = bundle
 
             ActivityUtils.addFragmentToActivity(supportFragmentManager,
                 addEditTaskFragment, R.id.contentFrame)
@@ -100,9 +100,9 @@ class AddEditTaskActivity : AppCompatActivity(), AddEditTaskNavigator {
         // In a configuration change we might have a ViewModel present. It's retained using the
         // Fragment Manager.
         val retainedViewModel = supportFragmentManager
-            .findFragmentByTag(ADD_EDIT_VIEWMODEL_TAG) as ViewModelHolder<AddEditTaskViewModel>
+            .findFragmentByTag(ADD_EDIT_VIEWMODEL_TAG) as? ViewModelHolder<AddEditTaskViewModel>
 
-        if (retainedViewModel != null && retainedViewModel.viewmodel != null) {
+        if (retainedViewModel?.viewmodel != null) {
             // If the model was retained, return it.
             return retainedViewModel.viewmodel
         } else {

@@ -23,11 +23,9 @@ import android.support.design.widget.NavigationView
 import android.support.test.espresso.IdlingResource
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
-
 import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.ViewModelHolder
@@ -74,11 +72,11 @@ class TasksActivity : AppCompatActivity(), TaskItemNavigator, TasksNavigator {
         // In a configuration change we might have a ViewModel present. It's retained using the
         // Fragment Manager.
         val retainedViewModel = supportFragmentManager
-            .findFragmentByTag(TASKS_VIEWMODEL_TAG) as ViewModelHolder<TasksViewModel>
+            .findFragmentByTag(TASKS_VIEWMODEL_TAG) as? ViewModelHolder<TasksViewModel>
 
-        if (retainedViewModel != null && retainedViewModel.viewmodel != null) {
+        return if (retainedViewModel?.viewmodel != null) {
             // If the model was retained, return it.
-            return retainedViewModel.viewmodel
+            retainedViewModel.viewmodel
         } else {
             // There is no ViewModel yet, create it.
             val viewModel = TasksViewModel(
@@ -89,17 +87,17 @@ class TasksActivity : AppCompatActivity(), TaskItemNavigator, TasksNavigator {
                 supportFragmentManager,
                 ViewModelHolder.createContainer(viewModel),
                 TASKS_VIEWMODEL_TAG)
-            return viewModel
+            viewModel
         }
     }
 
     private fun findOrCreateViewFragment(): TasksFragment {
-        var tasksFragment: TasksFragment? = supportFragmentManager.findFragmentById(R.id.contentFrame) as TasksFragment
+        var tasksFragment = supportFragmentManager.findFragmentById(R.id.contentFrame) as? TasksFragment
         if (tasksFragment == null) {
             // Create the fragment
             tasksFragment = TasksFragment.newInstance()
             ActivityUtils.addFragmentToActivity(
-                supportFragmentManager, tasksFragment!!, R.id.contentFrame)
+                supportFragmentManager, tasksFragment, R.id.contentFrame)
         }
         return tasksFragment
     }
@@ -151,7 +149,7 @@ class TasksActivity : AppCompatActivity(), TaskItemNavigator, TasksNavigator {
         }
     }
 
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         mViewModel!!.handleActivityResult(requestCode, resultCode)
     }
 

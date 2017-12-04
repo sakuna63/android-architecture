@@ -63,9 +63,9 @@ class TaskDetailActivity : AppCompatActivity(), TaskDetailNavigator {
         // In a configuration change we might have a ViewModel present. It's retained using the
         // Fragment Manager.
         val retainedViewModel = supportFragmentManager
-            .findFragmentByTag(TASKDETAIL_VIEWMODEL_TAG) as ViewModelHolder<TaskDetailViewModel>
+            .findFragmentByTag(TASKDETAIL_VIEWMODEL_TAG) as? ViewModelHolder<TaskDetailViewModel>
 
-        if (retainedViewModel != null && retainedViewModel.viewmodel != null) {
+        if (retainedViewModel?.viewmodel != null) {
             // If the model was retained, return it.
             return retainedViewModel.viewmodel!!
         } else {
@@ -87,14 +87,14 @@ class TaskDetailActivity : AppCompatActivity(), TaskDetailNavigator {
         // Get the requested task id
         val taskId = intent.getStringExtra(EXTRA_TASK_ID)
 
-        var taskDetailFragment: TaskDetailFragment? = supportFragmentManager
-            .findFragmentById(R.id.contentFrame) as TaskDetailFragment
+        var taskDetailFragment = supportFragmentManager
+            .findFragmentById(R.id.contentFrame) as? TaskDetailFragment
 
         if (taskDetailFragment == null) {
             taskDetailFragment = TaskDetailFragment.newInstance(taskId)
 
             ActivityUtils.addFragmentToActivity(supportFragmentManager,
-                taskDetailFragment!!, R.id.contentFrame)
+                taskDetailFragment, R.id.contentFrame)
         }
         return taskDetailFragment
     }
@@ -107,7 +107,7 @@ class TaskDetailActivity : AppCompatActivity(), TaskDetailNavigator {
         ab.setDisplayShowHomeEnabled(true)
     }
 
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_EDIT_TASK) {
             // If the task was edited successfully, go back to the list.
             if (resultCode == ADD_EDIT_RESULT_OK) {

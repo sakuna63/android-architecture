@@ -21,12 +21,10 @@ import android.support.design.widget.NavigationView
 import android.support.v4.app.NavUtils
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
-
 import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.ViewModelHolder
@@ -73,9 +71,9 @@ class StatisticsActivity : AppCompatActivity() {
         val retainedViewModel = supportFragmentManager
             .findFragmentByTag(STATS_VIEWMODEL_TAG) as? ViewModelHolder<StatisticsViewModel>
 
-        if (retainedViewModel?.viewmodel != null) {
+        return if (retainedViewModel?.viewmodel != null) {
             // If the model was retained, return it.
-            return retainedViewModel.viewmodel!!
+            retainedViewModel.viewmodel!!
         } else {
             // There is no ViewModel yet, create it.
             val viewModel = StatisticsViewModel(applicationContext,
@@ -86,17 +84,17 @@ class StatisticsActivity : AppCompatActivity() {
                 supportFragmentManager,
                 ViewModelHolder.createContainer(viewModel),
                 STATS_VIEWMODEL_TAG)
-            return viewModel
+            viewModel
         }
     }
 
     private fun findOrCreateViewFragment(): StatisticsFragment {
-        var statisticsFragment: StatisticsFragment? = supportFragmentManager
-            .findFragmentById(R.id.contentFrame) as StatisticsFragment
+        var statisticsFragment = supportFragmentManager
+            .findFragmentById(R.id.contentFrame) as? StatisticsFragment
         if (statisticsFragment == null) {
             statisticsFragment = StatisticsFragment.newInstance()
             ActivityUtils.addFragmentToActivity(supportFragmentManager,
-                statisticsFragment!!, R.id.contentFrame)
+                statisticsFragment, R.id.contentFrame)
         }
         return statisticsFragment
     }

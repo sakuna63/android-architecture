@@ -21,18 +21,13 @@ import android.support.v4.widget.SwipeRefreshLayout
 
 import com.example.android.architecture.blueprints.todoapp.tasks.TasksViewModel
 
-object SwipeRefreshLayoutDataBinding {
-
-    /**
-     * Reloads the data when the pull-to-refresh is triggered.
-     *
-     *
-     * Creates the `android:onRefresh` for a [SwipeRefreshLayout].
-     */
-    @BindingAdapter("android:onRefresh")
-    fun setSwipeRefreshLayoutOnRefreshListener(view: ScrollChildSwipeRefreshLayout,
-                                               viewModel: TasksViewModel) {
-        view.setOnRefreshListener { viewModel.loadTasks(true) }
-    }
-
+/**
+ * Reloads the data when the pull-to-refresh is triggered.
+ *
+ *
+ * Creates the `android:onRefresh` for a [SwipeRefreshLayout].
+ */
+@BindingAdapter("android:onRefresh")
+fun ScrollChildSwipeRefreshLayout.setSwipeRefreshLayoutOnRefreshListener(viewModel: TasksViewModel) {
+    setOnRefreshListener { viewModel.loadTasks(true) }
 }
