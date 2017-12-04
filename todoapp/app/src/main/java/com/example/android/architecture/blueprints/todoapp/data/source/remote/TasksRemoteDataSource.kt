@@ -46,7 +46,7 @@ private constructor() : TasksDataSource {
      * returns an error.
      */
     override fun getTask(taskId: String, callback: TasksDataSource.GetTaskCallback) {
-        val task = TASKS_SERVICE_DATA[taskId]
+        val task = TASKS_SERVICE_DATA.getValue(taskId)
 
         // Simulate network by delaying the execution.
         val handler = Handler()
@@ -129,11 +129,8 @@ private constructor() : TasksDataSource {
         }
 
         val instance: TasksRemoteDataSource
-            get() {
-                if (INSTANCE == null) {
-                    INSTANCE = TasksRemoteDataSource()
-                }
-                return INSTANCE
+            get() = INSTANCE ?: TasksRemoteDataSource().also {
+                INSTANCE = it
             }
 
         private fun addTask(title: String, description: String, id: String) {

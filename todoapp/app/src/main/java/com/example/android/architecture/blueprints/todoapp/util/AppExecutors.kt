@@ -30,7 +30,8 @@ import java.util.concurrent.Executors
  * Grouping tasks like this avoids the effects of task starvation (e.g. disk reads don't wait behind
  * webservice requests).
  */
-class AppExecutors @VisibleForTesting
+class AppExecutors
+@VisibleForTesting
 internal constructor(private val diskIO: Executor, private val networkIO: Executor, private val mainThread: Executor) {
 
     constructor() : this(DiskIOThreadExecutor(), Executors.newFixedThreadPool(THREAD_COUNT),

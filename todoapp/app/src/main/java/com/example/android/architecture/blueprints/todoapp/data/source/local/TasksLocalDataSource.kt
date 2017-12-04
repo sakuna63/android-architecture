@@ -126,7 +126,7 @@ private constructor(private val mAppExecutors: AppExecutors,
         @Volatile private var INSTANCE: TasksLocalDataSource? = null
 
         fun getInstance(appExecutors: AppExecutors,
-                        tasksDao: TasksDao): TasksLocalDataSource? {
+                        tasksDao: TasksDao): TasksLocalDataSource {
             if (INSTANCE == null) {
                 synchronized(TasksLocalDataSource::class.java) {
                     if (INSTANCE == null) {
@@ -134,7 +134,7 @@ private constructor(private val mAppExecutors: AppExecutors,
                     }
                 }
             }
-            return INSTANCE
+            return INSTANCE!!
         }
 
         @VisibleForTesting

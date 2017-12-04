@@ -284,10 +284,9 @@ private constructor(tasksRemoteDataSource: TasksDataSource,
          */
         fun getInstance(tasksRemoteDataSource: TasksDataSource,
                         tasksLocalDataSource: TasksDataSource): TasksRepository {
-            if (INSTANCE == null) {
-                INSTANCE = TasksRepository(tasksRemoteDataSource, tasksLocalDataSource)
+            return INSTANCE ?: TasksRepository(tasksRemoteDataSource, tasksLocalDataSource).also {
+                INSTANCE = it
             }
-            return INSTANCE
         }
 
         /**

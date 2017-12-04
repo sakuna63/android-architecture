@@ -37,16 +37,12 @@ abstract class ToDoDatabase : RoomDatabase() {
 
         private val sLock = Any()
 
-        fun getInstance(context: Context): ToDoDatabase {
-            synchronized(sLock) {
-                if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder<ToDoDatabase>(context.applicationContext,
-                        ToDoDatabase::class.java!!, "Tasks.db")
-                        .build()
-                }
-                return INSTANCE
+        fun getInstance(context: Context): ToDoDatabase = synchronized(sLock) {
+            return INSTANCE ?: Room.databaseBuilder<ToDoDatabase>(context.applicationContext,
+                ToDoDatabase::class.java!!, "Tasks.db").build().also {
+
+                INSTANCE = it
             }
         }
     }
-
 }

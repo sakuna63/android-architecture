@@ -24,6 +24,9 @@ import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepo
 import com.example.android.architecture.blueprints.todoapp.data.source.local.TasksLocalDataSource
 
 import com.google.common.base.Preconditions.checkNotNull
+import com.example.android.architecture.blueprints.todoapp.data.source.local.ToDoDatabase
+import com.example.android.architecture.blueprints.todoapp.util.AppExecutors
+
 
 /**
  * Enables injection of mock implementations for
@@ -34,7 +37,8 @@ object Injection {
 
     fun provideTasksRepository(context: Context): TasksRepository {
         checkNotNull(context)
+        val database = ToDoDatabase.getInstance(context)
         return TasksRepository.getInstance(FakeTasksRemoteDataSource.instance,
-            TasksLocalDataSource.getInstance(context))
+            TasksLocalDataSource.getInstance(AppExecutors(), database.taskDao()))
     }
 }

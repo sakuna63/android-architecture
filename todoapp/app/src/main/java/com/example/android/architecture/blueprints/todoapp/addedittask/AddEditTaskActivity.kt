@@ -16,13 +16,13 @@
 
 package com.example.android.architecture.blueprints.todoapp.addedittask
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.annotation.VisibleForTesting
 import android.support.test.espresso.IdlingResource
-import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-
+import android.view.View
 import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.ViewModelHolder

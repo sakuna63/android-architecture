@@ -62,7 +62,7 @@ class TasksActivity : AppCompatActivity(), TaskItemNavigator, TasksNavigator {
         mViewModel!!.setNavigator(this)
 
         // Link View and ViewModel
-        tasksFragment.setViewModel(mViewModel)
+        tasksFragment.setViewModel(mViewModel!!)
     }
 
     override fun onDestroy() {
@@ -105,7 +105,7 @@ class TasksActivity : AppCompatActivity(), TaskItemNavigator, TasksNavigator {
     }
 
     private fun setupToolbar() {
-        val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val ab = supportActionBar
         ab!!.setHomeAsUpIndicator(R.drawable.ic_menu)
@@ -113,9 +113,9 @@ class TasksActivity : AppCompatActivity(), TaskItemNavigator, TasksNavigator {
     }
 
     private fun setupNavigationDrawer() {
-        mDrawerLayout = findViewById<View>(R.id.drawer_layout)
+        mDrawerLayout = findViewById(R.id.drawer_layout)
         mDrawerLayout!!.setStatusBarBackground(R.color.colorPrimaryDark)
-        val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
         if (navigationView != null) {
             setupDrawerContent(navigationView)
         }

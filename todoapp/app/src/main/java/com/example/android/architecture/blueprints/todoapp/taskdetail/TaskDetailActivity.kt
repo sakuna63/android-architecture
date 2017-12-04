@@ -16,9 +16,9 @@
 
 package com.example.android.architecture.blueprints.todoapp.taskdetail
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 
@@ -26,11 +26,10 @@ import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.ViewModelHolder
 import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity
+import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity.Companion.ADD_EDIT_RESULT_OK
 import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskFragment
+import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailFragment.Companion.REQUEST_EDIT_TASK
 import com.example.android.architecture.blueprints.todoapp.util.ActivityUtils
-
-import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity.ADD_EDIT_RESULT_OK
-import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailFragment.REQUEST_EDIT_TASK
 
 /**
  * Displays task details screen.
@@ -52,7 +51,7 @@ class TaskDetailActivity : AppCompatActivity(), TaskDetailNavigator {
         mTaskViewModel!!.setNavigator(this)
 
         // Link View and ViewModel
-        taskDetailFragment.setViewModel(mTaskViewModel)
+        taskDetailFragment.setViewModel(mTaskViewModel!!)
     }
 
     override fun onDestroy() {
@@ -68,7 +67,7 @@ class TaskDetailActivity : AppCompatActivity(), TaskDetailNavigator {
 
         if (retainedViewModel != null && retainedViewModel.viewmodel != null) {
             // If the model was retained, return it.
-            return retainedViewModel.viewmodel
+            return retainedViewModel.viewmodel!!
         } else {
             // There is no ViewModel yet, create it.
             val viewModel = TaskDetailViewModel(
@@ -101,7 +100,7 @@ class TaskDetailActivity : AppCompatActivity(), TaskDetailNavigator {
     }
 
     private fun setupToolbar() {
-        val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val ab = supportActionBar
         ab!!.setDisplayHomeAsUpEnabled(true)

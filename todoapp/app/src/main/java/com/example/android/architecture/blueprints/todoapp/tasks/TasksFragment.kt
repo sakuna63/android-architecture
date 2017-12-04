@@ -30,17 +30,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.ListView
-
 import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.R
-import com.example.android.architecture.blueprints.todoapp.ScrollChildSwipeRefreshLayout
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import com.example.android.architecture.blueprints.todoapp.databinding.TaskItemBinding
 import com.example.android.architecture.blueprints.todoapp.databinding.TasksFragBinding
 import com.example.android.architecture.blueprints.todoapp.util.SnackbarUtils
-
 import java.util.ArrayList
 
 /**
@@ -61,7 +57,7 @@ class TasksFragment : Fragment() {
         mTasksViewModel!!.start()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         mTasksFragBinding = TasksFragBinding.inflate(inflater, container, false)
 
@@ -151,7 +147,7 @@ class TasksFragment : Fragment() {
             ArrayList(0),
             activity as TasksActivity,
             Injection.provideTasksRepository(context.applicationContext),
-            mTasksViewModel)
+            mTasksViewModel!!)
         listView.adapter = mListAdapter
     }
 
@@ -220,7 +216,7 @@ class TasksFragment : Fragment() {
                 mTasksRepository
             )
 
-            viewmodel.setNavigator(mTaskItemNavigator)
+            viewmodel.setNavigator(mTaskItemNavigator!!)
 
             binding.viewmodel = viewmodel
             // To save on PropertyChangedCallbacks, wire the item's snackbar text observable to the

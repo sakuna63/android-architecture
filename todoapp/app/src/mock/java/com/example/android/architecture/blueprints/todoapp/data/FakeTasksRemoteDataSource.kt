@@ -33,7 +33,7 @@ private constructor() : TasksDataSource {
     }
 
     override fun getTask(taskId: String, callback: TasksDataSource.GetTaskCallback) {
-        val task = TASKS_SERVICE_DATA[taskId]
+        val task = TASKS_SERVICE_DATA.getValue(taskId)
         callback.onTaskLoaded(task)
     }
 
@@ -98,11 +98,8 @@ private constructor() : TasksDataSource {
         private val TASKS_SERVICE_DATA = LinkedHashMap<String, Task>()
 
         val instance: FakeTasksRemoteDataSource
-            get() {
-                if (INSTANCE == null) {
-                    INSTANCE = FakeTasksRemoteDataSource()
-                }
-                return INSTANCE
+            get() = INSTANCE ?: FakeTasksRemoteDataSource().also {
+                INSTANCE = it
             }
     }
 }

@@ -25,6 +25,7 @@ import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
+import android.view.View
 
 import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.R
@@ -70,11 +71,11 @@ class StatisticsActivity : AppCompatActivity() {
         // In a configuration change we might have a ViewModel present. It's retained using the
         // Fragment Manager.
         val retainedViewModel = supportFragmentManager
-            .findFragmentByTag(STATS_VIEWMODEL_TAG) as ViewModelHolder<StatisticsViewModel>
+            .findFragmentByTag(STATS_VIEWMODEL_TAG) as? ViewModelHolder<StatisticsViewModel>
 
-        if (retainedViewModel != null && retainedViewModel.viewmodel != null) {
+        if (retainedViewModel?.viewmodel != null) {
             // If the model was retained, return it.
-            return retainedViewModel.viewmodel
+            return retainedViewModel.viewmodel!!
         } else {
             // There is no ViewModel yet, create it.
             val viewModel = StatisticsViewModel(applicationContext,
@@ -101,9 +102,9 @@ class StatisticsActivity : AppCompatActivity() {
     }
 
     private fun setupNavigationDrawer() {
-        mDrawerLayout = findViewById<View>(R.id.drawer_layout)
+        mDrawerLayout = findViewById(R.id.drawer_layout)
         mDrawerLayout!!.setStatusBarBackground(R.color.colorPrimaryDark)
-        val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
         if (navigationView != null) {
             setupDrawerContent(navigationView)
         }

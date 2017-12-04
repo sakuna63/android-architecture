@@ -42,10 +42,10 @@ class TaskItemViewModel(context: Context, tasksRepository: TasksRepository) : Ta
      * Called by the Data Binding library when the row is clicked.
      */
     fun taskClicked() {
-        val taskId = taskId ?: // Click happened before task was loaded, no-op.
-            return
-        if (mNavigator != null && mNavigator!!.get() != null) {
-            mNavigator!!.get().openTaskDetails(taskId)
+        // Click happened before task was loaded, no-op.
+        val taskId = taskId ?: return
+        mNavigator?.get()?.let {
+            it.openTaskDetails(taskId)
         }
     }
 }
