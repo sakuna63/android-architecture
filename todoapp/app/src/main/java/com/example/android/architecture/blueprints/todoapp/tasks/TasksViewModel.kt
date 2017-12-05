@@ -24,8 +24,6 @@ import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.databinding.ObservableList
 import android.graphics.drawable.Drawable
-
-import com.example.android.architecture.blueprints.todoapp.BR
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity
 import com.example.android.architecture.blueprints.todoapp.data.Task
@@ -33,7 +31,6 @@ import com.example.android.architecture.blueprints.todoapp.data.source.TasksData
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailActivity
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
-
 import java.util.ArrayList
 
 /**
@@ -67,16 +64,14 @@ class TasksViewModel(
 
     private val mIsDataLoadingError = ObservableBoolean(false)
 
-    private val mContext: Context // To avoid leaks, this must be an Application Context.
+    private val mContext: Context = context.applicationContext // To avoid leaks, this must be an Application Context.
 
     private var mNavigator: TasksNavigator? = null
 
-    val isEmpty: Boolean
-        @Bindable
-        get() = items.isEmpty()
+    val isEmpty = ObservableBoolean(false)
 
     init {
-        mContext = context.applicationContext // Force use of Application Context.
+        // Force use of Application Context.
 
         // Set initial state
         setFiltering(TasksFilterType.ALL_TASKS)
@@ -215,7 +210,7 @@ class TasksViewModel(
 
                 items.clear()
                 items.addAll(tasksToShow)
-                notifyPropertyChanged(BR.empty) // It's a @Bindable so update manually
+                isEmpty.set(items.isEmpty())
             }
 
             override fun onDataNotAvailable() {

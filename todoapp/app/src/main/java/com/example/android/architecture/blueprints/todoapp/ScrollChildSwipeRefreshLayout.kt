@@ -21,6 +21,9 @@ import android.support.v4.view.ViewCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewManager
+import org.jetbrains.anko.AnkoViewDslMarker
+import org.jetbrains.anko.custom.ankoView
 
 /**
  * Extends [SwipeRefreshLayout] to support non-direct descendant scrolling views.
@@ -47,4 +50,18 @@ class ScrollChildSwipeRefreshLayout : SwipeRefreshLayout {
     fun setScrollUpChild(view: View) {
         mScrollUpChild = view
     }
+
+    inline fun <T : View> T.lparams(
+        width: Int = LayoutParams.WRAP_CONTENT,
+        height: Int = LayoutParams.WRAP_CONTENT
+    ): T {
+        val layoutParams = LayoutParams(width, height)
+        this@lparams.layoutParams = layoutParams
+        return this
+    }
+}
+
+inline fun ViewManager.scrollChildSwipeRefreshLayout(): ScrollChildSwipeRefreshLayout = scrollChildSwipeRefreshLayout {}
+inline fun ViewManager.scrollChildSwipeRefreshLayout(init: (@AnkoViewDslMarker ScrollChildSwipeRefreshLayout).() -> Unit): ScrollChildSwipeRefreshLayout {
+    return ankoView({ context -> ScrollChildSwipeRefreshLayout(context) }, theme = 0) { init() }
 }

@@ -30,13 +30,14 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import anko.TasksUI
 import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import com.example.android.architecture.blueprints.todoapp.databinding.TaskItemBinding
-import com.example.android.architecture.blueprints.todoapp.databinding.TasksFragBinding
 import com.example.android.architecture.blueprints.todoapp.util.SnackbarUtils
+import org.jetbrains.anko.AnkoContext
 import java.util.ArrayList
 
 /**
@@ -46,11 +47,11 @@ class TasksFragment : Fragment() {
 
     private var mTasksViewModel: TasksViewModel? = null
 
-    private var mTasksFragBinding: TasksFragBinding? = null
-
     private var mListAdapter: TasksAdapter? = null
 
     private var mSnackbarCallback: Observable.OnPropertyChangedCallback? = null
+
+    private lateinit var tasksUI: TasksUI
 
     override fun onResume() {
         super.onResume()
@@ -59,15 +60,10 @@ class TasksFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        mTasksFragBinding = TasksFragBinding.inflate(inflater, container, false)
-
-        mTasksFragBinding!!.view = this
-
-        mTasksFragBinding!!.viewmodel = mTasksViewModel
-
         setHasOptionsMenu(true)
-
-        return mTasksFragBinding!!.root
+        val ankoContext = AnkoContext.create(context, this)
+        tasksUI = TasksUI(mTasksViewModel!!)
+        return tasksUI.createView(ankoContext)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -141,7 +137,7 @@ class TasksFragment : Fragment() {
     }
 
     private fun setupListAdapter() {
-        val listView = mTasksFragBinding!!.tasksList
+        val listView = tasksUI.tasksList
 
         mListAdapter = TasksAdapter(
             ArrayList(0),
@@ -152,8 +148,8 @@ class TasksFragment : Fragment() {
     }
 
     private fun setupRefreshLayout() {
-        val listView = mTasksFragBinding!!.tasksList
-        val swipeRefreshLayout = mTasksFragBinding!!.refreshLayout
+        val listView = tasksUI.tasksList
+        val swipeRefreshLayout = tasksUI.refreshLayout
         swipeRefreshLayout.setColorSchemeColors(
             ContextCompat.getColor(activity, R.color.colorPrimary),
             ContextCompat.getColor(activity, R.color.colorAccent),
@@ -199,16 +195,15 @@ class TasksFragment : Fragment() {
 
         override fun getView(i: Int, view: View?, viewGroup: ViewGroup): View {
             val task = getItem(i)
-            val binding: TaskItemBinding
-            if (view == null) {
+            val binding: TaskItemBinding = if (view == null) {
                 // Inflate
                 val inflater = LayoutInflater.from(viewGroup.context)
 
                 // Create the binding
-                binding = TaskItemBinding.inflate(inflater, viewGroup, false)
+                TaskItemBinding.inflate(inflater, viewGroup, false)
             } else {
                 // Recycling view
-                binding = DataBindingUtil.getBinding(view)
+                DataBindingUtil.getBinding(view)
             }
 
             val viewmodel = TaskItemViewModel(
