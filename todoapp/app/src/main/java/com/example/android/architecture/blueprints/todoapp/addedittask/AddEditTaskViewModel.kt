@@ -114,7 +114,7 @@ class AddEditTaskViewModel internal constructor(context: Context, private val mT
         return snackbarText.get()
     }
 
-    private fun createTask(title: String, description: String) {
+    private fun createTask(title: String?, description: String?) {
         val newTask = Task(title, description)
         if (newTask.isEmpty) {
             snackbarText.set(mContext.getString(R.string.empty_task_message))
@@ -124,7 +124,7 @@ class AddEditTaskViewModel internal constructor(context: Context, private val mT
         }
     }
 
-    private fun updateTask(title: String, description: String) {
+    private fun updateTask(title: String?, description: String?) {
         if (isNewTask) {
             throw RuntimeException("updateTask() was called but task is new.")
         }
