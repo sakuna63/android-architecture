@@ -17,9 +17,7 @@
 package com.example.android.architecture.blueprints.todoapp.addedittask
 
 import android.content.Context
-import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
-
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
@@ -36,13 +34,13 @@ import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepo
  */
 class AddEditTaskViewModel internal constructor(context: Context, private val mTasksRepository: TasksRepository) : TasksDataSource.GetTaskCallback {
 
-    val title = ObservableField<String>()
+    val title = ObservableField<String>("")
 
-    val description = ObservableField<String>()
+    val description = ObservableField<String>("")
 
-    val dataLoading = ObservableBoolean(false)
+    val dataLoading = ObservableField<Boolean>(false)
 
-    val snackbarText = ObservableField<String>()
+    val snackbarText = ObservableField<String>("")
 
     private val mContext: Context  // To avoid leaks, this must be an Application Context.
 

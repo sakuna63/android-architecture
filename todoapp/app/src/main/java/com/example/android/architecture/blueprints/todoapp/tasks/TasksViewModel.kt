@@ -48,7 +48,7 @@ class TasksViewModel(
     // These observable fields will update Views automatically
     val items: ObservableList<Task> = ObservableArrayList()
 
-    val dataLoading = ObservableBoolean(false)
+    val dataLoading = ObservableField<Boolean>(false)
 
     val currentFilteringLabel = ObservableField<String>()
 
@@ -56,19 +56,19 @@ class TasksViewModel(
 
     val noTaskIconRes = ObservableField<Drawable>()
 
-    val tasksAddViewVisible = ObservableBoolean()
+    val tasksAddViewVisible = ObservableField<Boolean>()
 
     internal val snackbarText = ObservableField<String>()
 
     private var mCurrentFiltering = TasksFilterType.ALL_TASKS
 
-    private val mIsDataLoadingError = ObservableBoolean(false)
+    private val mIsDataLoadingError = ObservableField<Boolean>(false)
 
     private val mContext: Context = context.applicationContext // To avoid leaks, this must be an Application Context.
 
     private var mNavigator: TasksNavigator? = null
 
-    val isEmpty = ObservableBoolean(false)
+    val isEmpty = ObservableField<Boolean>(false)
 
     init {
         // Force use of Application Context.

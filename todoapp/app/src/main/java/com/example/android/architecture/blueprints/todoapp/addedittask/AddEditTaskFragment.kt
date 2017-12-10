@@ -20,17 +20,15 @@ import android.databinding.Observable
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
-import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import anko.AddTaskUI
 import com.example.android.architecture.blueprints.todoapp.R
-import com.example.android.architecture.blueprints.todoapp.databinding.AddtaskFragBinding
 import com.example.android.architecture.blueprints.todoapp.util.SnackbarUtils
-
 import com.google.common.base.Preconditions.checkNotNull
+import org.jetbrains.anko.AnkoContext
 
 /**
  * Main UI for the add task screen. Users can enter a task title and description.
@@ -39,7 +37,7 @@ class AddEditTaskFragment : Fragment() {
 
     private var mViewModel: AddEditTaskViewModel? = null
 
-    private var mViewDataBinding: AddtaskFragBinding? = null
+    private lateinit var addTaskUI: AddTaskUI
 
     private var mSnackbarCallback: Observable.OnPropertyChangedCallback? = null
 
@@ -68,17 +66,12 @@ class AddEditTaskFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val root = inflater!!.inflate(R.layout.addtask_frag, container, false)
-        if (mViewDataBinding == null) {
-            mViewDataBinding = AddtaskFragBinding.bind(root)
-        }
-
-        mViewDataBinding!!.viewmodel = mViewModel
-
         setHasOptionsMenu(true)
         retainInstance = false
 
-        return mViewDataBinding!!.root
+        val ankoContext = AnkoContext.create(context, this)
+        addTaskUI = AddTaskUI(mViewModel!!)
+        return addTaskUI.createView(ankoContext)
     }
 
     override fun onDestroy() {
@@ -120,4 +113,4 @@ class AddEditTaskFragment : Fragment() {
             return AddEditTaskFragment()
         }
     }
-}// Required empty public constructor
+}

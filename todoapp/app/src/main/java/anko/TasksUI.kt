@@ -1,9 +1,5 @@
 package anko
 
-import android.databinding.Observable
-import android.databinding.ObservableBoolean
-import android.databinding.ObservableField
-import android.databinding.ObservableList
 import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
@@ -30,7 +26,6 @@ import org.jetbrains.anko.sdk15.coroutines.onClick
 import org.jetbrains.anko.support.v4.onRefresh
 import org.jetbrains.anko.textAppearance
 import org.jetbrains.anko.textView
-import kotlin.reflect.KMutableProperty0
 
 /**
  * Generate with Plugin
@@ -106,61 +101,5 @@ class TasksUI(private val viewModel: TasksViewModel) : AnkoComponent<TasksFragme
                 }
             }.lparams(width = matchParent, height = matchParent)
         }
-    }
-
-    private fun <T : Any, U : T> bind(setter: (T) -> Unit, field: ObservableField<U>) {
-        field.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(p0: Observable?, p1: Int) {
-                setter(field.get())
-            }
-        })
-    }
-
-    private fun bind(setter: (Boolean) -> Unit, field: ObservableBoolean) {
-        field.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(p0: Observable?, p1: Int) {
-                setter(field.get())
-            }
-        })
-    }
-
-    private fun <T : Any> bind(setter: (T) -> Unit, field: ObservableBoolean, converter: (Boolean) -> T) {
-        field.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(p0: Observable?, p1: Int) {
-                setter(converter(field.get()))
-            }
-        })
-    }
-
-    private fun <T : Any, U : T> bind(prop: KMutableProperty0<T?>, field: ObservableField<U>) {
-        field.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(p0: Observable?, p1: Int) {
-                prop.set(field.get())
-            }
-        })
-    }
-
-    private fun <T : Any> bind(setter: (List<T>) -> Unit, field: ObservableList<T>) {
-        field.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<T>>() {
-            override fun onChanged(p0: ObservableList<T>?) {
-                setter(field)
-            }
-
-            override fun onItemRangeMoved(p0: ObservableList<T>?, p1: Int, p2: Int, p3: Int) {
-                setter(field)
-            }
-
-            override fun onItemRangeChanged(p0: ObservableList<T>?, p1: Int, p2: Int) {
-                setter(field)
-            }
-
-            override fun onItemRangeInserted(p0: ObservableList<T>?, p1: Int, p2: Int) {
-                setter(field)
-            }
-
-            override fun onItemRangeRemoved(p0: ObservableList<T>?, p1: Int, p2: Int) {
-                setter(field)
-            }
-        })
     }
 }
